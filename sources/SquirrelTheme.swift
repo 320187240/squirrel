@@ -66,6 +66,9 @@ final class SquirrelTheme {
   private(set) var inlinePreedit = false
   private(set) var inlineCandidate = false
   private(set) var showPaging = false
+  private(set) var fixedPosition = false
+  private(set) var fixedPositionX: CGFloat = 0
+  private(set) var fixedPositionY: CGFloat = 0
 
   private var fonts = [NSFont]()
   private var labelFonts = [NSFont]()
@@ -200,6 +203,9 @@ final class SquirrelTheme {
     mutualExclusive ?= config.getBool("style/mutual_exclusive")
     memorizeSize ?= config.getBool("style/memorize_size")
     showPaging ?= config.getBool("style/show_paging")
+    fixedPosition ?= config.getBool("style/fixed_position")
+    fixedPositionX ?= config.getDouble("style/fixed_position_x")
+    fixedPositionY ?= config.getDouble("style/fixed_position_y")
 
     statusMessageType ?= .init(rawValue: config.getString("style/status_message_type") ?? "")
     candidateFormat ?= config.getString("style/candidate_format")

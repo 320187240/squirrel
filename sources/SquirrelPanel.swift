@@ -381,24 +381,37 @@ private extension SquirrelPanel {
       panelRect.size = NSSize(width: min(0.95 * screenRect.width, contentRect.height + theme.edgeInset.height * 2),
                               height: min(0.95 * screenRect.height, contentRect.width + theme.edgeInset.width * 2) + theme.pagingOffset)
 
-      // To avoid jumping up and down while typing, use the lower screen when
-      // typing on upper, and vice versa
-      if position.midY / screenRect.height >= 0.5 {
-        panelRect.origin.y = position.minY - SquirrelTheme.offsetHeight - panelRect.height + theme.pagingOffset
+      // 固定位置模式
+      if theme.fixedPosition {
+        panelRect.origin.x = screenRect.minX + theme.fixedPositionX
+        panelRect.origin.y = screenRect.minY + theme.fixedPositionY
       } else {
-        panelRect.origin.y = position.maxY + SquirrelTheme.offsetHeight
-      }
-      // Make the first candidate fixed at the left of cursor
-      panelRect.origin.x = position.minX - panelRect.width - SquirrelTheme.offsetHeight
-      if view.preeditRange.length > 0, let preeditTextRange = view.convert(range: view.preeditRange) {
-        let preeditRect = view.contentRect(range: preeditTextRange)
-        panelRect.origin.x += preeditRect.height + theme.edgeInset.width
+        // To avoid jumping up and down while typing, use the lower screen when
+        // typing on upper, and vice versa
+        if position.midY / screenRect.height >= 0.5 {
+          panelRect.origin.y = position.minY - SquirrelTheme.offsetHeight - panelRect.height + theme.pagingOffset
+        } else {
+          panelRect.origin.y = position.maxY + SquirrelTheme.offsetHeight
+        }
+        // Make the first candidate fixed at the left of cursor
+        panelRect.origin.x = position.minX - panelRect.width - SquirrelTheme.offsetHeight
+        if view.preeditRange.length > 0, let preeditTextRange = view.convert(range: view.preeditRange) {
+          let preeditRect = view.contentRect(range: preeditTextRange)
+          panelRect.origin.x += preeditRect.height + theme.edgeInset.width
+        }
       }
     } else {
       panelRect.size = NSSize(width: min(0.95 * screenRect.width, contentRect.width + theme.edgeInset.width * 2),
                               height: min(0.95 * screenRect.height, contentRect.height + theme.edgeInset.height * 2))
       panelRect.size.width += theme.pagingOffset
-      panelRect.origin = NSPoint(x: position.minX - theme.pagingOffset, y: position.minY - SquirrelTheme.offsetHeight - panelRect.height)
+
+      // 固定位置模式
+      if theme.fixedPosition {
+        panelRect.origin.x = screenRect.minX + theme.fixedPositionX
+        panelRect.origin.y = screenRect.minY + theme.fixedPositionY
+      } else {
+        panelRect.origin = NSPoint(x: position.minX - theme.pagingOffset, y: position.minY - SquirrelTheme.offsetHeight - panelRect.height)
+      }
     }
     if panelRect.maxX > screenRect.maxX {
       panelRect.origin.x = screenRect.maxX - panelRect.width

@@ -395,7 +395,7 @@ app_options:
     ascii_mode: true
     no_inline: true
   org.vim.MacVim:
-    ascii_mode: true  # 初始爲西文模式
+    ascii_mode: true  # 初始爲英文模式
     no_inline: true   # 不使用行內編輯
     vim_mode: true    # 退出VIM插入模式自動切換輸入法狀態
   com.apple.dt.Xcode:
